@@ -96,8 +96,7 @@ const Index = () => {
             Face Blur & Downscale
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Automatically detect and blur faces in your photos while downscaling to 150 PPI.
-            Perfect for privacy-conscious image sharing.
+            This site will automatically detect and blur faces, remove your photo's metadata, and downscale to 150ppi for the GSAPP Urbanist dataset project. Please double-check the outputs for accuracy as it may not work in 100% of occasions.
           </p>
         </div>
 

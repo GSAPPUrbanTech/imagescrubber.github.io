@@ -64,7 +64,7 @@ function blurFace(ctx: CanvasRenderingContext2D, x: number, y: number, width: nu
   
   // Apply blur using CSS filter
   ctx.save();
-  ctx.filter = 'blur(20px)';
+  ctx.filter = 'blur(50px)';
   ctx.drawImage(tempCanvas, x, y, width, height);
   ctx.restore();
 }

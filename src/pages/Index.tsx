@@ -82,6 +82,14 @@ const Index = () => {
     });
   };
 
+  const handleClearAll = () => {
+    setImages([]);
+    toast({
+      title: 'Cleared',
+      description: 'All images have been removed',
+    });
+  };
+
   return (
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -105,7 +113,7 @@ const Index = () => {
 
         {/* Download All Button */}
         {images.length > 0 && (
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
             <Button
               size="lg"
               onClick={handleDownloadAll}
@@ -113,6 +121,14 @@ const Index = () => {
             >
               <Download className="w-5 h-5" />
               Download All ({images.length})
+            </Button>
+            <Button
+              size="lg"
+              onClick={handleClearAll}
+              variant="outline"
+              className="text-lg px-8 py-6"
+            >
+              Clear All
             </Button>
           </div>
         )}

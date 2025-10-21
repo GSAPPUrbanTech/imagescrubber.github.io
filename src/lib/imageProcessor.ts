@@ -64,7 +64,7 @@ function blurFace(ctx: CanvasRenderingContext2D, x: number, y: number, width: nu
   
   // Apply blur using CSS filter
   ctx.save();
-  ctx.filter = 'blur(100px)';
+  ctx.filter = 'blur(50px)';
   ctx.drawImage(tempCanvas, x, y, width, height);
   ctx.restore();
 }
@@ -112,13 +112,11 @@ export async function processImage(file: File): Promise<ProcessedImage> {
               const width = Math.floor((face.box.xmax - face.box.xmin) * canvas.width);
               const height = Math.floor((face.box.ymax - face.box.ymin) * canvas.height);
               
-              // Focus on the head area for better blur - more localized
-              const faceY = Math.floor(y + height * 0.05); // Start slightly lower
-              const faceHeight = Math.floor(height * 0.25); // Only top 25% - more focused on face
-              const faceWidth = Math.floor(width * 0.8); // Slightly narrower
-              const faceX = Math.floor(x + width * 0.1); // Center horizontally
+              // Focus on the head area for better blur
+              const faceY = y;
+              const faceHeight = Math.floor(height * 0.4); // Top 40% for face
               
-              blurFace(ctx, faceX, faceY, faceWidth, faceHeight);
+              blurFace(ctx, x, faceY, width, faceHeight);
             }
             
             // Downscale to 150 PPI

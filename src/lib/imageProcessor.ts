@@ -49,43 +49,24 @@ function downscaleImage(canvas: HTMLCanvasElement, targetPPI: number = 150): HTM
   return scaledCanvas;
 }
 
-function pixelateFace(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) {
-  const pixelSize = 30; // Size of pixelation blocks
-  
-  // Ensure we're working with valid coordinates
-  x = Math.max(0, Math.floor(x));
-  y = Math.max(0, Math.floor(y));
-  width = Math.floor(width);
-  height = Math.floor(height);
-  
+function blurFace(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) {
   // Extract the face region
   const imageData = ctx.getImageData(x, y, width, height);
-  const data = imageData.data;
   
-  // Apply pixelation effect
-  for (let py = 0; py < height; py += pixelSize) {
-    for (let px = 0; px < width; px += pixelSize) {
-      // Get the color of the top-left pixel in this block
-      const pixelIndex = (py * width + px) * 4;
-      const r = data[pixelIndex];
-      const g = data[pixelIndex + 1];
-      const b = data[pixelIndex + 2];
-      const a = data[pixelIndex + 3];
-      
-      // Fill the entire block with this color
-      for (let dy = 0; dy < pixelSize && py + dy < height; dy++) {
-        for (let dx = 0; dx < pixelSize && px + dx < width; dx++) {
-          const index = ((py + dy) * width + (px + dx)) * 4;
-          data[index] = r;
-          data[index + 1] = g;
-          data[index + 2] = b;
-          data[index + 3] = a;
-        }
-      }
-    }
-  }
+  // Apply a strong blur effect
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = width;
+  tempCanvas.height = height;
+  const tempCtx = tempCanvas.getContext('2d');
+  if (!tempCtx) return;
   
-  ctx.putImageData(imageData, x, y);
+  tempCtx.putImageData(imageData, 0, 0);
+  
+  // Apply blur using CSS filter
+  ctx.save();
+  ctx.filter = 'blur(20px)';
+  ctx.drawImage(tempCanvas, x, y, width, height);
+  ctx.restore();
 }
 
 export async function processImage(file: File): Promise<ProcessedImage> {
@@ -135,7 +116,7 @@ export async function processImage(file: File): Promise<ProcessedImage> {
               const faceY = y;
               const faceHeight = Math.floor(height * 0.4); // Top 40% for face
               
-              pixelateFace(ctx, x, faceY, width, faceHeight);
+              blurFace(ctx, x, faceY, width, faceHeight);
             }
             
             // Downscale to 150 PPI

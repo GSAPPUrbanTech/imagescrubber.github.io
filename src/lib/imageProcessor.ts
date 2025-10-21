@@ -50,7 +50,7 @@ function downscaleImage(canvas: HTMLCanvasElement, targetPPI: number = 150): HTM
 }
 
 function pixelateFace(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) {
-  const pixelSize = 15; // Size of pixelation blocks
+  const pixelSize = 30; // Size of pixelation blocks
   
   // Ensure we're working with valid coordinates
   x = Math.max(0, Math.floor(x));
